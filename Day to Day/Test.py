@@ -1,15 +1,8 @@
-import json
-import requests
+def main():
+    name = input("What is your name?")
+    print(hello(name))
+def hello(to = "World"):
+    return f"Hello, {to}"
 
-import sys
-
-if len(sys.argv) != 2:
-    sys.exit()
-response = requests.get("https://itunes.apple.com/search?entity=song&limit=50&term=)" + sys.argv[1])
-
-Res = response.json()
-for result in Res["results"]:
-    print(result["trackName"])
-
-
-#python3 "Day to Day/Test.py" weezer
+if __name__ == "__main__":
+    main()
