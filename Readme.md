@@ -40,7 +40,8 @@ I am using this repo to:
 Python-Journey/
 │
 ├── Day to Day/              # daily practice files
-├── projects/                # mini-projects built while learning
+├── projects/
+├── File I               # mini-projects built while learning
 ├── notebooks/               # jupyter notebooks
 ├── notes/                   # concept notes / quick references
 └── README.md
