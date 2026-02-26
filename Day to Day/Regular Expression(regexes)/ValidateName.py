@@ -1,7 +1,7 @@
 import re
 
 name = input("Enter your name: ").strip()
-matches = re.search(r"^(.+), ?(.+)$",name)
+matches = re.search(r"^(.+), *(.+)$",name)
 # we are using (..)group. here (.+) means one or more character and , is used to separate first and last name and space is used to separate first and last name
 # here we are using regex to validate the name and also to extract first and last name
 # here .+ means one or more character and , is used to separate first and last name

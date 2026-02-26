@@ -5,6 +5,8 @@ import re
 
 email = input("Enter your email: ").strip()
 if re.search(r"^(\w|\s|\.)+@(\w+\.)?\w+\.(edu|com|gov|org)$", email, re.IGNORECASE):
+# nowdays internet uses another version of this validation , search google or chatgpt for that
+# eg of what most browsers uses --->/^[\w.!#$%&'*+/=?^`{|}~-]+@[a-z\d](?:[a-z\d-]{0,61}[a-z\d])?(?:\.[a-z\d](?:[a-z\d-]{0,61}[a-z\d])?)*$/i
 #here () is used with ? so it means optional(0 or more)
 #if re.search(r"^(\w|\s)+@\w+\.(edu|com|gov|org)$", email.lower()): this could be done so we email becomes all lower case but we can use flags as well
 # you can add different expression in one parameter

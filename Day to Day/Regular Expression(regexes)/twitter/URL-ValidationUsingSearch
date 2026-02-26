@@ -2,6 +2,15 @@ import re
 
 url = input("Enter URL: ").strip()
 
-matches = re.search(r"^(https?://)?(www\.)?twitter\.com/(.+)$", url,re.IGNORECASE)
-if matches:
-    print(f"Username: {matches.group(3)}")
+if matches := re.search(r"^(https?://)?(?:www\.)?twitter\.com/([a-z0-9])$", url,re.IGNORECASE):
+
+    print(f"Username: {matches.group(2)}")
+
+# if (?:www\.) means that www. is optional and it will not be captured as a group because we are using non-capturing group
+# here we could use (?:....) on  group to not capture them and change indexing of group as well
+# while writing regex for url we have to escape the dot because dot is a special character in
+# while using regex ,indexing of group starts from 1 and not 0 because group(0) is the whole string that matches the regex
+# here we are using walrus operator to assign the value of matches and also to check if it is not None
+#we are assigning the value as well as checking true or false in one line using walrus operator
+# while writing regex for url we have to escape the dot because dot is a special character in regex and it matches any character
+#  except new line so we have to escape it to match the dot in the url
