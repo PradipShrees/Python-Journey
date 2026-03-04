@@ -1,25 +1,57 @@
+# if _ is present infront of a variable it is a convention to indicate that the variable is intended for internal use only,
+#  it is not meant to be accessed from outside the class,
+#  it is a way to indicate that the variable is private and should not be accessed directly from outside the class,
+#  it is a way to indicate that the variable is an implementation detail and should not be accessed directly from outside the class.
+class Student:
+    #class is a blueprint for creating objects, it is a template for creating objects, it is a way to define a new data type
+    def __init__(self,name,house):
+        # This None make passing house optional, if we don't pass house it will be None, if we pass house it will be the value of house
+        if not name or not house:
+            raise ValueError("Missing name or house")
+        # this gives us much more control over the data that we are storing in our class, we can validate the data before storing it in our class,
+        #  we can also raise an error if the data is not valid
+        self.name = name
+       
+
+        # self is instance variable, it is used to store the value of the instance variable
+        self.house = house
+    def __str__(self):
+        return f"{self.name} from {self.house}"
+    #getter
+    @property
+    def house(self):
+        return self._house
+    #setter 
+    @house.setter
+    def house(self, house):
+        if house not in ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"]:
+            raise ValueError("You don't belong to our private house")
+        self._house = house
+
+        #here we are passing value of setter house to _house which is a internal variable,
+        #  we are using _house to store the value of house,
+        #  this way we can validate the value of house before storing it in _house,
+        #  if the value of house is not valid we can raise an error and we won't store the invalid value in _house, this way we can ensure that the data we are storing in our class is valid.
+# if we use .house instead of _house in setter, we will get into an infinite loop where it keeps calling the setter and it will keep calling itself until it runs out of memory, 
+# this is called infinite recursion, this is why we use _house to store the value of house,
+#  so that we can avoid infinite recursion and we can validate the value of house before storing it in _house.
 def main():
     student = get_students()
-   """ if student[0] == "Padma":
-        student[1] = "Raven claw"
-         if you add this line this will give an error because tuple is immutable and we cannot change the value of a tuple once it is created.
-         if you want to change the value of a tuple you have to create a new tuple with """
-    print(f"{student[0]} is from {student[1]}")
-    # here we are using indexing to access the elements of the tuple returned by the get_students function. 
-    # student[0] is the name and student[1] is the house.
-    #  we can also use tuple unpacking to assign the values to name and house variables in one line.
+    student.house = "Number four SYDNEY ROAD"
+    print(student)
+    
 
 def get_students():
-    name = input("Name: ").strip()
-    house = input("House: ").strip()
-    return (name, house)
-# tuple is used when you want to return a inmutable sequence of values from a function.
-# tuple is a collection which is ordered and unchangeable. In python tuples are written with round brackets.
-# tuple unpacking is a feature in python that allows us to assign values from a tuple to variables in a single line.
-# here we are returning a tuple from the function get_students and then we are unpacking the tuple into name and house variables in the main function.
+    name = input("Name: ")
+    house = input("House: ")
+    try:
+            return Student(name, house)
+    except ValueError:
+        print("Missing name or house")
+       
+        # here student is an instance of the class Student, it is an object of the class Student, it
+    # this is called a constructor, it is used to create an instance of the class
+    
 
 if __name__ == "__main__":
-# Only run this code when this file is executed directly (python file.py).
-# If the file is imported (import file), this block will NOT run.
-# This lets the file be both a reusable module and a runnable script entry point.
     main()
