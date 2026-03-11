@@ -26,9 +26,10 @@ while True:
             print("My choice was Rock\nYour choice was Scissors\nI win 🏆")
 
         case _:
-        
+        # _: means this is the last case and it is used to catch whatever it left or and ending statement
             print(f"My choice was {player2_play}\nYour choice was {player1} \nTie 🤨")
 
     again = input("To continue press y and to stop press n --> ").lower().strip()
+    # again will help loop back to top of the program to start again
     if again != "y":
         break
