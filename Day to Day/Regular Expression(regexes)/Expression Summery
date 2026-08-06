@@ -1,0 +1,200 @@
+"""
+re (Regular Expressions) - Revision Script
+Run: python3 re_revision.py
+
+Covers:
+- re.search
+- re.match
+- re.fullmatch
+- re.findall
+- re.finditer
+- re.sub
+- re.subn
+- re.split
+- re.compile
+- Common flags: IGNORECASE, MULTILINE, DOTALL
+
+Tip: Use raw strings for regex: r"..."
+"""
+
+import re
+
+
+def title(text: str) -> None:
+    print("\n" + "=" * 60)
+    print(text)
+    print("=" * 60)
+
+
+def show(pattern: str, text: str) -> None:
+    """Helper: show pattern + text (readable)."""
+    print(f"pattern: {pattern!r}")
+    print(f"text   : {text!r}")
+
+
+def demo_search():
+    title("1) re.search()  -> first match anywhere in the string")
+    text = "My email is a@b.com and backup is b@c.org"
+    pattern = r"\w+@\w+\.\w+"
+    show(pattern, text)
+
+    m = re.search(pattern, text)
+    if m:
+        print("match? : YES")
+        print("group():", m.group())
+        print("span() :", m.span(), "(start,end)")
+    else:
+        print("match? : NO")
+
+
+def demo_match():
+    title("2) re.match()  -> match only at the START of the string")
+    pattern = r"\d+"
+
+    text1 = "123abc"
+    show(pattern, text1)
+    print("match:", bool(re.match(pattern, text1)))
+
+    text2 = "abc123"
+    show(pattern, text2)
+    print("match:", bool(re.match(pattern, text2)))
+
+
+def demo_fullmatch():
+    title("3) re.fullmatch()  -> must match the ENTIRE string (validation)")
+    pattern = r"\d{4}"
+
+    text1 = "2026"
+    show(pattern, text1)
+    print("fullmatch:", bool(re.fullmatch(pattern, text1)))
+
+    text2 = "2026a"
+    show(pattern, text2)
+    print("fullmatch:", bool(re.fullmatch(pattern, text2)))
+
+
+def demo_findall():
+    title("4) re.findall()  -> list of all matches")
+    text = "IDs: 12, 34, 56"
+    pattern = r"\d+"
+    show(pattern, text)
+    print("findall:", re.findall(pattern, text))
+
+
+def demo_finditer():
+    title("5) re.finditer()  -> iterator of match objects (positions too)")
+    text = "cat rat bat"
+    pattern = r"\w+at"
+    show(pattern, text)
+
+    for m in re.finditer(pattern, text):
+        print(f"found: {m.group()!r} at {m.start()}..{m.end()} (span={m.span()})")
+
+
+def demo_sub():
+    title("6) re.sub()  -> replace matches")
+    text = "Phone: 0412 345 678"
+    pattern = r"\d"
+    show(pattern, text)
+
+    masked = re.sub(pattern, "X", text)
+    print("sub:", masked)
+
+    # Replace only first 4 digits
+    masked_first_4 = re.sub(pattern, "X", text, count=4)
+    print("sub (count=4):", masked_first_4)
+
+
+def demo_subn():
+    title("7) re.subn()  -> replace + number of replacements")
+    text = "a1b2c3"
+    pattern = r"\d"
+    show(pattern, text)
+
+    new_text, n = re.subn(pattern, "", text)
+    print("subn:", new_text, "| replacements:", n)
+
+
+def demo_split():
+    title("8) re.split()  -> split by a regex pattern")
+    text = "apple, banana; cherry | mango"
+    pattern = r"[,;|]\s*"
+    show(pattern, text)
+
+    parts = re.split(pattern, text)
+    print("split:", parts)
+
+
+def demo_compile():
+    title("9) re.compile()  -> reuse a compiled regex")
+    email_re = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
+
+    tests = ["a@b.com", "bad email", "x@y", "hello@site.org"]
+    print("pattern:", email_re.pattern)
+
+    for t in tests:
+        print(f"{t!r} ->", bool(email_re.fullmatch(t)))
+
+
+def demo_flags():
+    title("10) Flags  -> IGNORECASE, MULTILINE, DOTALL")
+
+    # IGNORECASE
+    pattern = r"hello"
+    text = "HeLLo world"
+    show(pattern, text)
+    print("IGNORECASE:", bool(re.search(pattern, text, flags=re.IGNORECASE)))
+
+    # MULTILINE: ^ and $ work on each line
+    pattern = r"^hi"
+    text = "hi\nnope\nhi again"
+    show(pattern, text)
+    print("no flag  :", re.findall(pattern, text))
+    print("MULTILINE:", re.findall(pattern, text, flags=re.MULTILINE))
+
+    # DOTALL: . can match newline
+    pattern = r"a.*c"
+    text = "a\nc"
+    show(pattern, text)
+    print("no flag :", bool(re.search(pattern, text)))
+    print("DOTALL  :", bool(re.search(pattern, text, flags=re.DOTALL)))
+
+
+def demo_common_patterns():
+    title("11) Useful mini-patterns (quick reference)")
+
+    examples = [
+        (r"\d+", "Find numbers", "Order 4392 is ready"),
+        (r"^\S+@\S+\.\S+$", "Basic email (no spaces)", "me@uni.edu"),
+        (r"^[^\s@]+@[^\s@]+\.(edu|com|org|gov)$", "Email w/ allowed TLDs", "a@b.edu"),
+        (r"^(https?://)?(www\.)?(twitter\.com|x\.com)/", "Twitter/X prefix", "https://twitter.com/david"),
+        (r"[^@]+", "Everything except @ (1+ chars)", "name@domain"),
+        (r"\bcat\b", "Word boundary (cat as whole word)", "a cat catalog"),
+    ]
+
+    for pat, desc, text in examples:
+        print(f"\n- {desc}")
+        show(pat, text)
+        m = re.search(pat, text, flags=re.IGNORECASE)
+        print("search result:", m.group() if m else None)
+
+
+def main():
+    demo_search()
+    demo_match()
+    demo_fullmatch()
+    demo_findall()
+    demo_finditer()
+    demo_sub()
+    demo_subn()
+    demo_split()
+    demo_compile()
+    demo_flags()
+    demo_common_patterns()
+
+    title("DONE ✅")
+    print("Tip: Edit the sample texts/patterns and re-run to practice.")
+
+
+if __name__ == "__main__":
+    main()
